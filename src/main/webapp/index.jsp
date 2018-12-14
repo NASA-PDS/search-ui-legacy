@@ -59,26 +59,100 @@ String contextPath = request.getContextPath() + "/";
     <form action="search.jsp" method="get">
       <input type="text" name="q" size="60" />&nbsp;&nbsp;<input type="submit" value="Search" />
     </form>
-
-    <p style="margin-top: 2em; margin-bottom: .5em;">Begin your search by entering a keyword in the text box above. The following are some examples of supported keywords and search examples:</p>
-
-    <div id="IEBug">
-      <ul>
-        <li>A target name like <strong>mars</strong> or <strong>eros</strong></li>
+  
+  <div id="IEBug">    
+    <p style="margin-top: 2em; margin-bottom: .5em;">
+    Begin your search by entering a keyword or keywords in the text box above. 
+    The following are some examples of supported keywords and search examples:
+    </p>
+    <ul>
+        <li>A target name like <strong>mars</strong> or <strong>eros</strong> or a target body type like <strong>asteroid</strong></li>
         <li>An instrument name or type like <strong>spectrometer</strong> or <strong>laser altimeter</strong> or <strong>MOLA</strong></li>
-        <li>A target body type like <strong>asteroid</strong></li>
         <li>A word or phrase to find in the description of a data set or search tool</li>
-      </ul>
+        <li>The use of quotation marks to bind words that occur together, e.g. <strong>&quot;mars express&quot;</strong></li>
+        <li>The use of logical operator <strong>OR</strong> or <strong>AND</strong>, e.g. <strong>uranus OR neptune</strong></li>
+    </ul>
 
-      <p style="margin-top: 1em; margin-bottom: .5em;">You can further refine your query by:</p>
-      <ul>
-        <li>Use quotation marks to bind words that occur together, e.g. <strong>&quot;mars express&quot;</strong></li>
-        <li>Specifying a search field before the word to search, e.g. <strong>target:mars</strong></li>
-        <ul>
-          <li>The legal search fields are <strong>target:</strong>, <strong>instrument:</strong>, <strong>investigation:</strong>, <strong>instrument-type:</strong></li>
-        </ul>
-        <li>Inserting logical operator <strong>OR</strong> or <strong>AND</strong>, e.g. <strong>target:uranus OR target:neptune</strong></li>
-      </ul>
+    <p style="margin-top: 2em; margin-bottom: 1em;">
+    You may further refine your query by entering a searchable attribute along with a keyword. 
+    See the following examples:</p>
+    <table id="searchable_attributes">
+	<thead>
+	    <tr>
+		<th>Attribute</th>
+		<th>Description</th>
+		<th>Example</th>
+	    </tr>
+	</thead>
+	<tbody>
+	    <tr>
+		<td>identifier</td>
+		<td>Search for products with a specific logical identifier (LID).</td>
+		<td>identifier:urn:nasa:pds:maven.iuvs.raw:echelle</td>
+	    </tr>
+	    <tr>
+		<td>instrument</td>
+		<td>Search for products with a specified instrument name.</td>
+		<td>instrument:instrument_name:IMAGING ULTRAVIOLET SPECTROGRAPH</td>
+	    </tr>
+	    <tr>
+		<td>instrument-host</td>
+		<td>Search for products with a specified instrument host.</td>
+		<td>instrument-host:MAVEN</td>
+	    </tr>
+	    <tr>
+		<td>instrument-host-type</td>
+		<td>Search for products with a specified instrument host type.</td>
+		<td>instrument-host-type:Spacecraft</td>
+	    </tr>
+	    <tr>
+		<td>instrument-type</td>
+		<td>Search for products with a specified instrument type.</td>
+		<td>instrument-type:Imager</td>
+	    </tr>
+	    <tr>
+		<td>investigation</td>
+		<td>Search for products with a specified investigation (mission) name.</td>
+		<td>investigation:Galileo</td>
+	    </tr>
+	    <tr>
+		<td>observing-system</td>
+		<td>Search for products with a specified observing system name.</td>
+		<td>observing-system:Pathfinder-IMP</td>
+	    </tr>
+	    <tr>
+		<td>product-class</td>
+		<td>Search for products with a specific PDS4 Product Class name (Product_Bundle, Product_Collection, etc).</td>
+		<td>product-class:Product_Collection</td>
+	    </tr>
+	    <tr>
+		<td>target</td>
+		<td>Search for products with a specified target name.</td>
+		<td>target:MARS</td>
+	    </tr>
+	    <tr>
+		<td>target-type</td>
+		<td>Search for products with a specified target type.</td>
+		<td>target-type:Planet</td>
+	    </tr>
+	    <tr>
+		<td>title</td>
+		<td>Search for products with a specified value within the title field of a product.</td>
+		<td>title:Bundle</td>
+	    </tr>
+	    <tr>
+		<td>start-time</td>
+		<td>Search for products within a specified start datetime range. Datetime format should be in ISO-8601 format.</td>
+		<td>start-time:[2008-05-01T00:00:00.000z to 2008-06-01T00:00:00.000Z]</td>
+	    </tr>
+	    <tr>
+		<td>stop-time</td>
+		<td>Search for products within a specified stop datetime range. Datetime format should be in ISO-8601 format.</td>
+		<td>stop-time:[2008-05-01T00:00:00.000z to 2008-06-01T00:00:00.000Z]</td>
+	    </tr>
+	</tbody>
+    </table>
+
     </div>
     <!-- InstanceEndEditable -->
   </div>

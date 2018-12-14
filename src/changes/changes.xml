@@ -23,6 +23,12 @@
   </properties>
 
   <body>
+    <release version="1.14.0" date="TBD" description="TBD">
+      <action dev="csuh" type="update" issue="PDS-639">
+        Added a complete list of searchable attributes to the main page of Keyword Search.
+      </action>
+    </release>
+
     <release version="1.13.0" date="2018-09-28" description="This release of the Search User Interface is a component of the integrated release 9.0.0 of the PDS4 System. This is an operational release of the system components to date.">
       <action dev="csuh" type="add" issue="PDS-585">
         Added Google Analytics to website header.
