@@ -31,13 +31,13 @@ String contextPath = request.getContextPath() + "/";
 <div id="IE">
 <![endif]--> 
 
-<c:import url="/header.html" context="/include" />
-<c:import url="/main_menu.html" context="/include" />
-
-<div id="submenu">
-<c:import url="/datasearch_menu.html" context="/include" />
-<!-- <ul id="submenu_standards"><li>&nbsp;</li></ul> -->
-<div class="clear"></div>
+<div id="header-container">
+  <c:import url="/header_logo.html" context="/include" />
+  <div id="menu-container">
+    <c:import url="/main_menu.html" context="/include" />
+    <c:import url="/datasearch_menu.html" context="/include" />
+  </div>
+  <c:import url="/header_links.html" context="/include" />
 </div>
 
 <!-- Sidebar -->
