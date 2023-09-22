@@ -19,9 +19,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>gov.nasa.pds.2010</groupId>
-    <artifactId>search</artifactId>
-    <version>2.0.0</version>
+    <groupId>gov.nasa</groupId>
+    <artifactId>pds</artifactId>
+    <version>1.13.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.search</groupId>
@@ -32,7 +32,7 @@
   <description>
     The Search User Interface software serves as the user interface for searching for PDS3 and PDS4 catalog products through the archive-filter end point of the Search Service.
   </description>
-  <url>https://pds-cm.jpl.nasa.gov/pds4/search/search-ui/</url>
+  <url>https://nasa-pds.github.io/search-ui-legacy/</url>
 
   <licenses>
     <license>
@@ -51,7 +51,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.4.0</version>
         <configuration>
           <warName>${artifactId}</warName>
           <archive>
@@ -94,42 +94,25 @@
     </plugins>
   </build>
 
-  <repositories>
-    <!-- Hosts the PDS and OODT artifacts. -->
-    <repository>
-      <id>pds-repo</id>
-      <name>PDS Maven Repository</name>
-      <url>https://pds-cm.jpl.nasa.gov/maven2</url>
-      <releases>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-        <checksumPolicy>warn</checksumPolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <dependencies>
-	<dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>jstl</artifactId>
-        <version>1.1.1</version>
-        <scope>runtime</scope>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.1.1</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
-        <groupId>taglibs</groupId>
-        <artifactId>standard</artifactId>
-        <scope>runtime</scope>
-        <version>1.1.1</version>
+      <groupId>taglibs</groupId>
+      <artifactId>c</artifactId>
+      <version>1.1.1</version>
+      <scope>runtime</scope>
+      <type>tld</type>
     </dependency>
     <dependency>
-        <groupId>taglibs</groupId>
-        <artifactId>c</artifactId>
-        <version>1.1.1</version>
-        <scope>runtime</scope>
-        <type>tld</type>
+      <groupId>taglibs</groupId>
+      <artifactId>standard</artifactId>
+      <scope>runtime</scope>
+      <version>1.1.1</version>
     </dependency>
     <dependency>
         <groupId>taglibs</groupId>
