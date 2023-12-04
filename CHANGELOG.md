@@ -1,5 +1,13 @@
 # Changelog
 
+## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2023-12-04)
+
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.1.0...«unknown»)
+
+**Improvements:**
+
+- Upgrade Keyword Search and dependencies to support Harvest/Registry upgrades [\#1](https://github.com/NASA-PDS/search-ui-legacy/issues/1)
+
 ## [v2.1.0](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.1.0) (2023-10-05)
 
 [Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/aeca3206a0fae3d911ce6f23d68e84656a6074cf...v2.1.0)
