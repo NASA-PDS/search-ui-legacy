@@ -112,8 +112,7 @@ public class RegistryLegacyServlet extends HttpServlet {
 
 
       HttpResponse<String> solrResponse = client.send(solrRequest, BodyHandlers.ofString());
-      // LOG.info(String.valueOf(solrResponse.statusCode()));
-      // LOG.info(solrResponse.body());
+
       response.setStatus(solrResponse.statusCode());
       response.addHeader(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
       response.getOutputStream().write(solrResponse.body().getBytes());
