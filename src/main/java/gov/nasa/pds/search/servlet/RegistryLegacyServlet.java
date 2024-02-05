@@ -95,16 +95,13 @@ public class RegistryLegacyServlet extends HttpServlet {
    */
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-    LOG.info("GET request received.");
     try {
       // Forward the query to the results page.
       LOG.info("Query: " + request.getQueryString());
 
       String queryString = getQueryString(request);
-      String url =
-          String.format("%s/%s/%s?%s", this.solrServerUrl, this.solrCollection,
+      String url = String.format("%s/%s/%s?%s", this.solrServerUrl, this.solrCollection,
               this.solrRequestHandler, queryString);
-      LOG.info("URL: " + url);
 
 
       HttpClient client = HttpClient.newHttpClient();
