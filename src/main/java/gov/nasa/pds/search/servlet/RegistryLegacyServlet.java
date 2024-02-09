@@ -96,13 +96,11 @@ public class RegistryLegacyServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     try {
-      // Forward the query to the results page.
-      LOG.info("Query: " + request.getQueryString());
 
       String queryString = getQueryString(request);
       String url = String.format("%s/%s/%s?%s", this.solrServerUrl, this.solrCollection,
               this.solrRequestHandler, queryString);
-
+      LOG.info("Solr Search: " + url);
 
       HttpClient client = HttpClient.newHttpClient();
       HttpRequest solrRequest = HttpRequest.newBuilder().uri(URI.create(url)).build();
@@ -111,7 +109,8 @@ public class RegistryLegacyServlet extends HttpServlet {
       HttpResponse<String> solrResponse = client.send(solrRequest, BodyHandlers.ofString());
 
       response.setStatus(solrResponse.statusCode());
-      response.addHeader(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
+
+      setResponseHeader(request.getParameter("wt"), response);
       response.getOutputStream().write(solrResponse.body().getBytes());
     } catch (Exception e) {
       LOG.severe(e.getMessage());
@@ -139,9 +138,8 @@ public class RegistryLegacyServlet extends HttpServlet {
     Enumeration<?> parameterNames = request.getParameterNames();
     while (parameterNames.hasMoreElements()) {
       String paramKey = String.valueOf(parameterNames.nextElement());
-      LOG.info("paramKey: " + paramKey);
-
       String value = "";
+
       if (paramKey.equals(REQUEST_HANDLER_PARAM)) {
         value = request.getParameter(REQUEST_HANDLER_PARAM);
         if (REQUEST_HANDLERS.contains(value)) {
@@ -151,9 +149,24 @@ public class RegistryLegacyServlet extends HttpServlet {
         value = URLDecoder.decode(request.getParameter(paramKey), "UTF-8");
         queryString +=
             String.format("%s=%s&", paramKey, URLEncoder.encode(value, "UTF-8"));
-        LOG.info("QueryString: " + queryString);
       }
     }
+
+    if (queryString.equals("")) {
+      return "q=*:*";
+    }
+
     return queryString;
+  }
+
+  private void setResponseHeader(String wt, HttpServletResponse response) {
+    String contentType = "text/html; charset=UTF-8";
+    if (wt.equals("json")) {
+      contentType = "application/json; charset=UTF-8";
+    } else if (wt.equals("xml")) {
+      contentType = "application/xml; charset=UTF-8";
+    }
+    
+    response.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
   }
 }
