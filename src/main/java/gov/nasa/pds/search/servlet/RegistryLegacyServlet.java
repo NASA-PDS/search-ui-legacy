@@ -114,6 +114,7 @@ public class RegistryLegacyServlet extends HttpServlet {
       response.getOutputStream().write(solrResponse.body().getBytes());
     } catch (Exception e) {
       LOG.severe(e.getMessage());
+      e.printStackTrace();
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
     }
   }
@@ -161,12 +162,13 @@ public class RegistryLegacyServlet extends HttpServlet {
 
   private void setResponseHeader(String wt, HttpServletResponse response) {
     String contentType = "text/html; charset=UTF-8";
-    if (wt.equals("json")) {
-      contentType = "application/json; charset=UTF-8";
-    } else if (wt.equals("xml")) {
-      contentType = "application/xml; charset=UTF-8";
+    if (wt != null) {
+      if (wt.equals("json")) {
+        contentType = "application/json; charset=UTF-8";
+      } else if (wt.equals("xml")) {
+        contentType = "application/xml; charset=UTF-8";
+      }
     }
-    
     response.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
   }
 }
