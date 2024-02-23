@@ -1,12 +1,20 @@
 # Changelog
 
-## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2023-12-04)
+## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2024-02-23)
 
 [Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.1.0...«unknown»)
 
 **Improvements:**
 
 - Upgrade Keyword Search and dependencies to support Harvest/Registry upgrades [\#1](https://github.com/NASA-PDS/search-ui-legacy/issues/1)
+
+**Defects:**
+
+- NullPointerException when `wt` is not provided [\#7](https://github.com/NASA-PDS/search-ui-legacy/issues/7) [[s.high](https://github.com/NASA-PDS/search-ui-legacy/labels/s.high)]
+
+**Other closed issues:**
+
+- Create new middleware layer to interface with Solr [\#5](https://github.com/NASA-PDS/search-ui-legacy/issues/5)
 
 ## [v2.1.0](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.1.0) (2023-10-05)
 
