@@ -138,6 +138,14 @@ public class RegistryLegacyServlet extends HttpServlet {
         "POST requests are not supported by this API");
   }
 
+  /**
+   * Generate query string from subset of allowable query parameters
+   * 
+   * 
+   * @param request
+   * @return
+   * @throws UnsupportedEncodingException
+   */
   private String getQueryString(HttpServletRequest request) throws UnsupportedEncodingException {
     String queryString = "";
 
@@ -172,7 +180,6 @@ public class RegistryLegacyServlet extends HttpServlet {
     String queryString = "";
     for (String v : Arrays.asList(parameterValues)) {
       value = URLDecoder.decode(v, "UTF-8");
-      LOG.info(v);
       queryString += String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
     }
     return queryString;
