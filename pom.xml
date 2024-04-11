@@ -85,24 +85,6 @@
           </execution>
         </executions>
       </plugin>
-      <!-- 
-        Configuration for deploying to a local Tomcat server. Provide the 
-        username and password for the Manager interface in your settings.xml.
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>3.3.1</version>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar-no-fork</goal>
-              <goal>test-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
