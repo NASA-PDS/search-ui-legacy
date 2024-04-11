@@ -10,6 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Logger;
@@ -38,6 +39,10 @@ public class RegistryLegacyServlet extends HttpServlet {
 
   private static List<String> SOLR_QUERY_PARAMS =
       new ArrayList<String>(List.of("q", "sort", "start", "rows", "fq", "fl", "wt"));
+  private static List<String> SOLR_FACET_FIELDS =
+      new ArrayList<String>(List.of("facet_agency", "facet_instrument", "facet_investigation",
+          "facet_target", "facet_type", "facet_pds_model_version", "facet_primary_result_purpose",
+          "facet_primary_result_processing_level"));
   private static List<String> REQUEST_HANDLERS =
       new ArrayList<String>(List.of("search", "archive-filter", "select"));
   private static String REQUEST_HANDLER_PARAM = "qt";
@@ -147,9 +152,10 @@ public class RegistryLegacyServlet extends HttpServlet {
           this.solrRequestHandler = value;
         }
       } else if (SOLR_QUERY_PARAMS.contains(paramKey)) {
-        value = URLDecoder.decode(request.getParameter(paramKey), "UTF-8");
-        queryString +=
-            String.format("%s=%s&", paramKey, URLEncoder.encode(value, "UTF-8"));
+        queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
+      } else if (paramKey.endsWith(".facet.prefix")
+          && SOLR_FACET_FIELDS.contains(paramKey.split("\\.")[1])) {
+        queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
       }
     }
 
@@ -157,6 +163,18 @@ public class RegistryLegacyServlet extends HttpServlet {
       return "q=*:*";
     }
 
+    return queryString;
+  }
+
+  private String appendQueryParameters(String key, String[] parameterValues)
+      throws UnsupportedEncodingException {
+    String value = "";
+    String queryString = "";
+    for (String v : Arrays.asList(parameterValues)) {
+      value = URLDecoder.decode(v, "UTF-8");
+      LOG.info(v);
+      queryString += String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
+    }
     return queryString;
   }
 
