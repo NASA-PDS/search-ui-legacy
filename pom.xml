@@ -43,7 +43,7 @@
   </licenses>
   
   <properties>
-    <solr.version>9.3.0</solr.version>
+    <solr.version>9.6.0</solr.version>
   </properties>
 
   <build>
