@@ -1,8 +1,8 @@
 # Changelog
 
-## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2024-06-10)
+## [release/2.2.0](https://github.com/NASA-PDS/search-ui-legacy/tree/release/2.2.0) (2024-06-10)
 
-[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.1.6...«unknown»)
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.1.6...release/2.2.0)
 
 **Defects:**
 
