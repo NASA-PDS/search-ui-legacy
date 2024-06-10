@@ -177,7 +177,7 @@ public class RegistryLegacyServlet extends HttpServlet {
     for (String v : Arrays.asList(parameterValues)) {
       value = XssUtils.clean(v);
       if (value.matches("\\w*")) {
-        log.info("Solr query: " + value);
+        LOG.info("Solr query: " + value);
       }
       queryString +=
           String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
