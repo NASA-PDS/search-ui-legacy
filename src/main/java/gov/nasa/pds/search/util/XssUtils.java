@@ -1,5 +1,6 @@
 package gov.nasa.pds.search.util;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.regex.Pattern;
 
@@ -34,11 +35,13 @@ public class XssUtils {
 			Pattern.compile("alert\\((.*?)\\)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL) };
 
 	/**
-	 * This method makes up a simple anti cross-site scripting (XSS) filter written
-	 * for Java web applications. What it basically does is remove all suspicious
-	 * strings from request parameters before returning them to the application.
-	 */
-	public static String clean(String value) {
+     * This method makes up a simple anti cross-site scripting (XSS) filter written for Java web
+     * applications. What it basically does is remove all suspicious strings from request parameters
+     * before returning them to the application.
+     * 
+     * @throws UnsupportedEncodingException
+     */
+    public static String clean(String value) throws UnsupportedEncodingException {
 		if (value != null) {
 			// Avoid null characters
 			value = value.replaceAll("\0", "");
@@ -55,7 +58,7 @@ public class XssUtils {
 			char badChars[] = { '|', ';', '$', '@', '\'', '"', '<', '>', ',', '\\', /* CR */ '\r', /* LF */ '\n',
 					/* Backspace */ '\b' };
 			try {
-				String decodedStr = URLDecoder.decode(value);
+              String decodedStr = URLDecoder.decode(value, "UTF-8");
 				for (int i = 0; i < badChars.length; i++) {
 					if (decodedStr.indexOf(badChars[i]) >= 0) {
 						value = "";
