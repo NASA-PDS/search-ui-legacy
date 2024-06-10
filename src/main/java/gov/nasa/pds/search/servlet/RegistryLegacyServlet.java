@@ -116,7 +116,8 @@ public class RegistryLegacyServlet extends HttpServlet {
     } catch (Exception e) {
       LOG.severe(e.getMessage());
       e.printStackTrace();
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+          "Internal system failure. Contact pds-operator@jpl.nasa.gov for additional assistance.");
     }
   }
 
