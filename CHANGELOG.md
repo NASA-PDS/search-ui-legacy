@@ -1,5 +1,13 @@
 # Changelog
 
+## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2024-06-10)
+
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.1.6...«unknown»)
+
+**Defects:**
+
+- Fix code scanning alert per Log Injection [\#30](https://github.com/NASA-PDS/search-ui-legacy/issues/30) [[s.critical](https://github.com/NASA-PDS/search-ui-legacy/labels/s.critical)]
+
 ## [v2.1.6](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.1.6) (2024-04-11)
 
 [Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.1.0...v2.1.6)
