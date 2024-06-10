@@ -1,8 +1,16 @@
 # Changelog
 
-## [release/2.2.0](https://github.com/NASA-PDS/search-ui-legacy/tree/release/2.2.0) (2024-06-10)
+## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2024-06-10)
 
-[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.1.6...release/2.2.0)
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.2.0...«unknown»)
+
+**Other closed issues:**
+
+- Fix code scanning alert - Minimize error information logged back to website [\#32](https://github.com/NASA-PDS/search-ui-legacy/issues/32)
+
+## [v2.2.0](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.2.0) (2024-06-10)
+
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.1.6...v2.2.0)
 
 **Defects:**
 
