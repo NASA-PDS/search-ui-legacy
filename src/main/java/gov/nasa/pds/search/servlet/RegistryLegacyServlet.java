@@ -50,9 +50,6 @@ public class RegistryLegacyServlet extends HttpServlet {
   private static String SOLR_COLLECTION = "data";
   private static String DEFAULT_REQUEST_HANDLER = "archive-filter";
 
-  // private static final List<String> SOLR_QUERY_PARAMS = Arrays.asList("defType", "sort", "start",
-  // )
-
   /**
    * Constructor for the search servlet.
    */
@@ -105,7 +102,6 @@ public class RegistryLegacyServlet extends HttpServlet {
       String queryString = getQueryString(request);
       String url = String.format("%s/%s/%s?%s", this.solrServerUrl, this.solrCollection,
               this.solrRequestHandler, queryString);
-      LOG.info("Solr Search: " + url);
 
       HttpClient client = HttpClient.newHttpClient();
       HttpRequest solrRequest = HttpRequest.newBuilder().uri(URI.create(url)).build();
@@ -180,6 +176,9 @@ public class RegistryLegacyServlet extends HttpServlet {
     String queryString = "";
     for (String v : Arrays.asList(parameterValues)) {
       value = XssUtils.clean(v);
+      if (value.matches("\\w*")) {
+        log.info("Solr query: " + value);
+      }
       queryString +=
           String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
     }
