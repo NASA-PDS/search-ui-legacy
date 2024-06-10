@@ -3,7 +3,6 @@ package gov.nasa.pds.search.servlet;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -20,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpHeaders;
+import gov.nasa.pds.search.util.XssUtils;
 
 public class RegistryLegacyServlet extends HttpServlet {
 
@@ -179,8 +179,9 @@ public class RegistryLegacyServlet extends HttpServlet {
     String value = "";
     String queryString = "";
     for (String v : Arrays.asList(parameterValues)) {
-      value = URLDecoder.decode(v, "UTF-8");
-      queryString += String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
+      value = XssUtils.clean(v);
+      queryString +=
+          String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
     }
     return queryString;
   }
