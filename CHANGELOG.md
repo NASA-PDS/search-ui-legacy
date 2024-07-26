@@ -1,6 +1,6 @@
 # Changelog
 
-## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2024-06-10)
+## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2024-07-26)
 
 [Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.2.0...«unknown»)
 
