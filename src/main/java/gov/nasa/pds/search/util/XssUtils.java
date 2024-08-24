@@ -44,7 +44,7 @@ public class XssUtils {
     public static String clean(String value) throws UnsupportedEncodingException {
 		if (value != null) {
 			// Avoid null characters
-			value = value.replaceAll("\0", "");
+		    value = URLDecoder.decode(value, "UTF-8");
 
 			// Remove all sections that match a pattern
 			for (Pattern scriptPattern : xssPatterns) {
@@ -55,15 +55,13 @@ public class XssUtils {
 			// if any of the offending characters are present that facilitate
 			// Cross-Site Scripting and Blind SQL Injection.
 			// We normally exclude () but they often show up in queries.
-			char badChars[] = { '|', ';', '$', '@', '\'', '"', '<', '>', ',', '\\', /* CR */ '\r', /* LF */ '\n',
+            char badChars[] = {'\0', '|', ';', '$', '@', '\'', '"', '<', '>', '\\', /* CR */ '\r',
+                /* LF */ '\n',
 					/* Backspace */ '\b' };
 			try {
-              String decodedStr = URLDecoder.decode(value, "UTF-8");
-				for (int i = 0; i < badChars.length; i++) {
-					if (decodedStr.indexOf(badChars[i]) >= 0) {
-						value = "";
-					}
-				}
+              for (char badChar : badChars) {
+                value.replace(Character.toString(badChar), "");
+			  }
 			} catch (IllegalArgumentException e) {
 				value = "";
 			}
