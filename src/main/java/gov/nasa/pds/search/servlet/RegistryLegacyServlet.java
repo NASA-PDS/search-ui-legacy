@@ -38,7 +38,8 @@ public class RegistryLegacyServlet extends HttpServlet {
   private String solrRequestHandler;
 
   private static List<String> SOLR_QUERY_PARAMS =
-      new ArrayList<String>(List.of("q", "sort", "start", "rows", "fq", "fl", "wt"));
+      new ArrayList<String>(
+          List.of("q", "sort", "start", "rows", "fq", "fl", "wt", "json.wrf", "_"));
   private static List<String> SOLR_FACET_FIELDS =
       new ArrayList<String>(List.of("facet_agency", "facet_instrument", "facet_investigation",
           "facet_target", "facet_type", "facet_pds_model_version", "facet_primary_result_purpose",
@@ -161,12 +162,16 @@ public class RegistryLegacyServlet extends HttpServlet {
       } else if (paramKey.endsWith(".facet.prefix")
           && SOLR_FACET_FIELDS.contains(paramKey.split("\\.")[1])) {
         queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
+      } else {
+        LOG.warning("Unknown parameter: " + URLEncoder.encode(XssUtils.clean(paramKey), "UTF-8"));
       }
     }
 
     if (queryString.equals("")) {
       return "q=*:*";
     }
+
+    LOG.info("Solr query: " + queryString);
 
     return queryString;
   }
@@ -177,9 +182,7 @@ public class RegistryLegacyServlet extends HttpServlet {
     String queryString = "";
     for (String v : Arrays.asList(parameterValues)) {
       value = XssUtils.clean(v);
-      if (value.matches("\\w*")) {
-        LOG.info("Solr query: " + value);
-      }
+      LOG.info("key: " + key + " value: " + value);
       queryString +=
           String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
     }
