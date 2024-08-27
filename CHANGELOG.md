@@ -1,5 +1,13 @@
 # Changelog
 
+## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2024-08-27)
+
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.2.1...«unknown»)
+
+**Defects:**
+
+- Faceting no longer works since XssUtils was introduced [\#35](https://github.com/NASA-PDS/search-ui-legacy/issues/35) [[s.critical](https://github.com/NASA-PDS/search-ui-legacy/labels/s.critical)]
+
 ## [v2.2.1](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.2.1) (2024-07-26)
 
 [Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.2.0...v2.2.1)
