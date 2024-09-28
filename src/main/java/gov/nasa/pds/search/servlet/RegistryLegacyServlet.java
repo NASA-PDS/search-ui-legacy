@@ -41,13 +41,13 @@ public class RegistryLegacyServlet extends HttpServlet {
       new ArrayList<String>(
           List.of("q", "sort", "start", "rows", "fq", "fl", "wt", "json.wrf", "_", "facet.field",
               "facet", "facet.sort", "facet.mincount", "facet.method", "facet.excludeTerms",
-              "facet.contains"));
+              "facet.pivot", "facet.contains"));
   private static List<String> SOLR_FACET_FIELDS =
       new ArrayList<String>(List.of("facet_agency", "facet_instrument", "facet_investigation",
           "facet_target", "facet_type", "facet_pds_model_version", "facet_primary_result_purpose",
           "facet_primary_result_processing_level"));
   private static List<String> REQUEST_HANDLERS =
-      new ArrayList<String>(List.of("search", "archive-filter", "select"));
+      new ArrayList<String>(List.of("search", "archive-filter", "select", "keyword"));
   private static String REQUEST_HANDLER_PARAM = "qt";
   private static String SOLR_BASE_URL = "http://localhost:8983/solr";
   private static String SOLR_COLLECTION = "data";
