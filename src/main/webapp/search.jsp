@@ -89,10 +89,10 @@ for (String name : params.keySet()) {
 $(function() {
     //var query = window.location.href.slice(window.location.href.indexOf('?') + 1).split('@@');
     var query = '<%= query %>';
-		$.get('/services/search/search?' + query, function(data) {
-			$('.output').html(data);
-		});
+    $.get('/services/search/search?qt=archive-filter&' + query, function(data) {
+		$('.output').html(data);
 	});
+});
 </script>
 
 </head>
@@ -121,9 +121,6 @@ $(function() {
 
 	<!-- Added to contain search service  output -->
 	<div class="output"></div>
-
-	<!-- Commented out for new search service functionality -->
-	<!-- jsp:include page="http://pdsbeta:8080/search-service/select/" / -->
 
 	<!-- InstanceEndEditable -->
 
