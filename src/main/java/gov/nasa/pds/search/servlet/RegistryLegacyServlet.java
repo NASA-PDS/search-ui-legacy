@@ -180,10 +180,10 @@ public class RegistryLegacyServlet extends HttpServlet {
     }
 
     if (queryString.equals("")) {
-      return "q=*:*";
+      queryString = "q=*:*";
     }
 
-    LOG.fine("Solr query: " + queryString);
+    LOG.info("Solr query: " + queryString);
 
     return queryString;
   }
