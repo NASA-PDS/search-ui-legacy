@@ -1,11 +1,12 @@
 # Changelog
 
-## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2024-10-14)
+## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2024-11-11)
 
 [Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.2.1...«unknown»)
 
 **Defects:**
 
+- `Too many open files` error for servlet [\#40](https://github.com/NASA-PDS/search-ui-legacy/issues/40)
 - Faceting no longer works since XssUtils was introduced [\#35](https://github.com/NASA-PDS/search-ui-legacy/issues/35) [[s.critical](https://github.com/NASA-PDS/search-ui-legacy/labels/s.critical)]
 
 ## [v2.2.1](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.2.1) (2024-07-26)
