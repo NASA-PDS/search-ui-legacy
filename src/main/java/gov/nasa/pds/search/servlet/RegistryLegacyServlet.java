@@ -2,12 +2,7 @@ package gov.nasa.pds.search.servlet;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -18,8 +13,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.http.HttpHeaders;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpHeaders;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
 import gov.nasa.pds.search.util.XssUtils;
+
 
 public class RegistryLegacyServlet extends HttpServlet {
 
@@ -41,7 +44,7 @@ public class RegistryLegacyServlet extends HttpServlet {
       new ArrayList<String>(
           List.of("q", "sort", "start", "rows", "fq", "fl", "wt", "json.wrf", "_", "facet.field",
               "facet", "facet.sort", "facet.mincount", "facet.method", "facet.excludeTerms",
-              "facet.pivot", "facet.contains"));
+              "facet.pivot", "facet.contains", "facet.limit"));
   private static List<String> SOLR_FACET_FIELDS =
       new ArrayList<String>(List.of("facet_agency", "facet_instrument", "facet_investigation",
           "facet_target", "facet_type", "facet_pds_model_version", "facet_primary_result_purpose",
@@ -85,7 +88,7 @@ public class RegistryLegacyServlet extends HttpServlet {
       this.solrRequestHandler = DEFAULT_REQUEST_HANDLER;
     }
 
-    LOG.info("Solr Server URL: " + this.solrServerUrl);
+    LOG.fine("Solr Server URL: " + this.solrServerUrl);
 
     super.init(servletConfig);
   }
@@ -106,21 +109,28 @@ public class RegistryLegacyServlet extends HttpServlet {
       String url = String.format("%s/%s/%s?%s", this.solrServerUrl, this.solrCollection,
               this.solrRequestHandler, queryString);
 
-      HttpClient client = HttpClient.newHttpClient();
-      HttpRequest solrRequest = HttpRequest.newBuilder().uri(URI.create(url)).build();
 
+      try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+        ClassicHttpRequest httpGet = ClassicRequestBuilder.get(url).build();
+        String resultContent = null;
+        try (CloseableHttpResponse solrResponse =
+            httpClient.execute(httpGet)) {
+          response.setStatus(solrResponse.getCode());
+          setResponseHeader(request.getParameter("wt"), response);
+          HttpEntity entity = solrResponse.getEntity();
 
-      HttpResponse<String> solrResponse = client.send(solrRequest, BodyHandlers.ofString());
-
-      response.setStatus(solrResponse.statusCode());
-
-      setResponseHeader(request.getParameter("wt"), response);
-      response.getOutputStream().write(solrResponse.body().getBytes());
+          // Get response information
+          resultContent = EntityUtils.toString(entity);
+        }
+        response.getWriter().write(resultContent);
+      }
     } catch (Exception e) {
       LOG.severe(e.getMessage());
       e.printStackTrace();
       response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
           "Internal system failure. Contact pds-operator@jpl.nasa.gov for additional assistance.");
+    } finally {
+      
     }
   }
 
@@ -170,7 +180,7 @@ public class RegistryLegacyServlet extends HttpServlet {
     }
 
     if (queryString.equals("")) {
-      return "q=*:*";
+      queryString = "q=*:*";
     }
 
     LOG.info("Solr query: " + queryString);
@@ -184,7 +194,6 @@ public class RegistryLegacyServlet extends HttpServlet {
     String queryString = "";
     for (String v : Arrays.asList(parameterValues)) {
       value = XssUtils.clean(v);
-      LOG.info("key: " + key + " value: " + value);
       queryString +=
           String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
     }
@@ -203,3 +212,4 @@ public class RegistryLegacyServlet extends HttpServlet {
     response.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
   }
 }
+
