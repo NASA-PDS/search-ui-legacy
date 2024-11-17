@@ -47,6 +47,11 @@ String contextPath = request.getContextPath() + "/";
   <!-- InstanceEndEditable -->
 </div>
 
+<div id="annual-survey" class="banner">
+	<p class="header">New Beta Site is Live!</p>
+	<p> See our new version of search here: <a href="https://pds.mcp.nasa.gov/portal/search">https://pds.mcp.nasa.gov/portal/search</a></p>
+</div>
+
 <!-- Main content -->
 <div id="content">
   <h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->Keyword Search<!-- InstanceEndEditable --></h1>
