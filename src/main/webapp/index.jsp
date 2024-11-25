@@ -47,14 +47,13 @@ String contextPath = request.getContextPath() + "/";
   <!-- InstanceEndEditable -->
 </div>
 
-<div id="annual-survey" class="banner">
-	<p class="header">New Beta Site is Live!</p>
-	<p> See our new version of search here: <a href="https://pds.mcp.nasa.gov/portal/search">https://pds.mcp.nasa.gov/portal/search</a></p>
-</div>
-
 <!-- Main content -->
 <div id="content">
   <h1><a name="mainContent"></a><!-- InstanceBeginEditable name="pageTitle" -->Keyword Search<!-- InstanceEndEditable --></h1>
+  <div id="annual-survey" class="banner">
+    <p class="header">New Beta Site is Live!</p>
+    <p> See our new search interface here: <a href="https://pds.mcp.nasa.gov/portal/search">https://pds.mcp.nasa.gov/portal/search</a></p>
+  </div>
   <div>
     <!-- InstanceBeginEditable name="content" -->
     <p>This interface allows the user to search the holdings of the PDS archive. Results from a search include links to data sets available from the PDS archive. In addition to PDS data, the results also include links to data sets curated by other international space agencies.</p>

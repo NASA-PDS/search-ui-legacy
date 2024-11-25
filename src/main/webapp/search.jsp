@@ -111,12 +111,6 @@ $(function() {
   <c:import url="/header_links.html" context="/include" />
 </div>
 
-	<div id="annual-survey" class="banner">
-		<p class="header">New Beta Site is Live!</p>
-		<p> See our new version of search here: <a href="https://pds.mcp.nasa.gov/portal/search">https://pds.mcp.nasa.gov/portal/search</a></p>
-	</div>
-
-
 	<!-- InstanceBeginEditable name="custom_content" -->
 
 	<!-- Added to contain search service  output -->
