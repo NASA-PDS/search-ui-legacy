@@ -1,8 +1,8 @@
 # Changelog
 
-## [release/2.3.0](https://github.com/NASA-PDS/search-ui-legacy/tree/release/2.3.0) (2024-11-25)
+## [v2.3.0](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.3.0) (2024-11-25)
 
-[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.2.1...release/2.3.0)
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.2.1...v2.3.0)
 
 **Defects:**
 
