@@ -44,7 +44,7 @@ public class RegistryLegacyServlet extends HttpServlet {
       new ArrayList<String>(
           List.of("q", "sort", "start", "rows", "fq", "fl", "wt", "json.wrf", "_", "facet.field",
               "facet", "facet.sort", "facet.mincount", "facet.method", "facet.excludeTerms",
-              "facet.pivot", "facet.contains", "facet.limit"));
+              "facet.pivot", "facet.contains", "facet.limit", "bq", "qf", "mm", "pf", "ps", "tie"));
   private static List<String> SOLR_FACET_FIELDS =
       new ArrayList<String>(List.of("facet_agency", "facet_instrument", "facet_investigation",
           "facet_target", "facet_type", "facet_pds_model_version", "facet_primary_result_purpose",
