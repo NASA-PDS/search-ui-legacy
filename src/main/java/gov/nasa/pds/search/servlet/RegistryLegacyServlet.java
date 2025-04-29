@@ -251,7 +251,7 @@ public class RegistryLegacyServlet extends HttpServlet {
     try {
       for (String v : Arrays.asList(parameterValues)) {
         LOG.info("{} : {}", key, v);
-        value = XssUtils.clean(v);
+        value = XssUtils.sanitize(v);
         queryString += String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
       }
       return queryString;

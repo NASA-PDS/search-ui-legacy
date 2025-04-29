@@ -41,7 +41,7 @@ public class XssUtils {
      * 
      * @throws UnsupportedEncodingException
      */
-    public static String clean(String value) throws UnsupportedEncodingException {
+    public static String sanitize(String value) throws UnsupportedEncodingException {
 		if (value != null) {
 			// Avoid null characters
 		    value = URLDecoder.decode(value, "UTF-8");
