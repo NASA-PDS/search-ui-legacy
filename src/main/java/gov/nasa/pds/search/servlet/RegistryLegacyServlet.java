@@ -27,8 +27,6 @@ import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
 import org.apache.hc.client5.http.config.RequestConfig;
-import java.util.concurrent.TimeUnit;
-import java.time.Duration;
 import java.io.PrintWriter;
 
 
@@ -169,6 +167,9 @@ public class RegistryLegacyServlet extends HttpServlet {
           writer.write(resultContent);
         }
       }
+    } catch (IOException e) {
+      LOG.error("Error processing request", e);
+    }
     } catch (Exception e) {
       LOG.error("Error processing request", e);
       try {
