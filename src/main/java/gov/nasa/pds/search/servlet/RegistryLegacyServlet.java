@@ -226,7 +226,9 @@ public class RegistryLegacyServlet extends HttpServlet {
             && SOLR_FACET_FIELDS.contains(paramKey.split("\\.")[1])) {
           queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
         } else {
-          LOG.warn("Unknown parameter: {}", URLEncoder.encode(XssUtils.clean(paramKey), "UTF-8"));
+          if (LOG.isWarnEnabled()) {
+            LOG.warn("Unknown parameter: {}", URLEncoder.encode(XssUtils.clean(paramKey), "UTF-8"));
+          }
         }
       }
 
