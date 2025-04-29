@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +30,7 @@ public class RegistryLegacyServlet extends HttpServlet {
   private static final long serialVersionUID = 6640363130974190821L;
 
   /** Setup the logger. */
-  private static Logger LOG = Logger.getLogger(RegistryLegacyServlet.class.getName());
+  private static final Logger LOG = LoggerFactory.getLogger(RegistryLegacyServlet.class);
 
   /** URL for accessing Solr. */
   private String solrServerUrl;
@@ -42,24 +43,19 @@ public class RegistryLegacyServlet extends HttpServlet {
 
   private static List<String> SOLR_QUERY_PARAMS =
       new ArrayList<String>(
-          List.of("q", "sort", "start", "rows", "fq", "fl", "wt", "json.wrf", "_", "facet.field",
+    		  Arrays.asList("q", "sort", "start", "rows", "fq", "fl", "wt", "json.wrf", "_", "facet.field",
               "facet", "facet.sort", "facet.mincount", "facet.method", "facet.excludeTerms",
               "facet.pivot", "facet.contains", "facet.limit", "bq", "qf", "mm", "pf", "ps", "tie"));
   private static List<String> SOLR_FACET_FIELDS =
-      new ArrayList<String>(List.of("facet_agency", "facet_instrument", "facet_investigation",
+      new ArrayList<String>(Arrays.asList("facet_agency", "facet_instrument", "facet_investigation",
           "facet_target", "facet_type", "facet_pds_model_version", "facet_primary_result_purpose",
           "facet_primary_result_processing_level"));
   private static List<String> REQUEST_HANDLERS =
-      new ArrayList<String>(List.of("search", "archive-filter", "select", "keyword"));
+      new ArrayList<String>(Arrays.asList("search", "archive-filter", "select", "keyword", "all"));
   private static String REQUEST_HANDLER_PARAM = "qt";
   private static String SOLR_BASE_URL = "http://localhost:8983/solr";
   private static String SOLR_COLLECTION = "data";
   private static String DEFAULT_REQUEST_HANDLER = "archive-filter";
-
-  /**
-   * Constructor for the search servlet.
-   */
-  public RegistryLegacyServlet() {}
 
   /**
    * Initialize the servlet.
@@ -70,6 +66,7 @@ public class RegistryLegacyServlet extends HttpServlet {
    * @param servletConfig The servlet configuration.
    * @throws ServletException
    */
+  @Override
   public void init(ServletConfig servletConfig) throws ServletException {
 
     // Grab the solrServerUrl parameter from the servlet config.
@@ -88,7 +85,7 @@ public class RegistryLegacyServlet extends HttpServlet {
       this.solrRequestHandler = DEFAULT_REQUEST_HANDLER;
     }
 
-    LOG.fine("Solr Server URL: " + this.solrServerUrl);
+    LOG.debug("Solr Server URL: {}", this.solrServerUrl);
 
     super.init(servletConfig);
   }
@@ -101,20 +98,17 @@ public class RegistryLegacyServlet extends HttpServlet {
    * @throws ServletException
    * @throws IOException
    */
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) {
     try {
-
       String queryString = getQueryString(request);
       String url = String.format("%s/%s/%s?%s", this.solrServerUrl, this.solrCollection,
               this.solrRequestHandler, queryString);
 
-
       try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
         ClassicHttpRequest httpGet = ClassicRequestBuilder.get(url).build();
         String resultContent = null;
-        try (CloseableHttpResponse solrResponse =
-            httpClient.execute(httpGet)) {
+        try (CloseableHttpResponse solrResponse = httpClient.execute(httpGet)) {
           response.setStatus(solrResponse.getCode());
           setResponseHeader(request.getParameter("wt"), response);
           HttpEntity entity = solrResponse.getEntity();
@@ -125,12 +119,13 @@ public class RegistryLegacyServlet extends HttpServlet {
         response.getWriter().write(resultContent);
       }
     } catch (Exception e) {
-      LOG.severe(e.getMessage());
-      e.printStackTrace();
-      response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-          "Internal system failure. Contact pds-operator@jpl.nasa.gov for additional assistance.");
-    } finally {
-      
+      LOG.error("Error processing request", e);
+      try {
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+            "Internal system failure. Contact pds-operator@jpl.nasa.gov for additional assistance.");
+      } catch (IOException ioe) {
+        LOG.error("Failed to send error response", ioe);
+      }
     }
   }
 
@@ -142,10 +137,14 @@ public class RegistryLegacyServlet extends HttpServlet {
    * @throws ServletException
    * @throws IOException
    */
-  public void doPost(HttpServletRequest req, HttpServletResponse res)
-      throws ServletException, IOException {
-    res.sendError(HttpServletResponse.SC_BAD_REQUEST,
-        "POST requests are not supported by this API");
+  @Override
+  public void doPost(HttpServletRequest req, HttpServletResponse res) {
+    try {
+      res.sendError(HttpServletResponse.SC_BAD_REQUEST,
+          "POST requests are not supported by this API");
+    } catch (IOException e) {
+      LOG.error("Failed to send error response for POST request", e);
+    }
   }
 
   /**
@@ -156,48 +155,57 @@ public class RegistryLegacyServlet extends HttpServlet {
    * @return
    * @throws UnsupportedEncodingException
    */
-  private String getQueryString(HttpServletRequest request) throws UnsupportedEncodingException {
+  private String getQueryString(HttpServletRequest request) {
     String queryString = "";
 
-    Enumeration<?> parameterNames = request.getParameterNames();
-    while (parameterNames.hasMoreElements()) {
-      String paramKey = String.valueOf(parameterNames.nextElement());
-      String value = "";
-
-      if (paramKey.equals(REQUEST_HANDLER_PARAM)) {
-        value = request.getParameter(REQUEST_HANDLER_PARAM);
-        if (REQUEST_HANDLERS.contains(value)) {
-          this.solrRequestHandler = value;
+    try {
+      Enumeration<?> parameterNames = request.getParameterNames();
+      while (parameterNames.hasMoreElements()) {
+        String paramKey = String.valueOf(parameterNames.nextElement());
+        String value = "";
+        
+        if (paramKey.equals(REQUEST_HANDLER_PARAM)) {
+          value = request.getParameter(REQUEST_HANDLER_PARAM);
+          if (REQUEST_HANDLERS.contains(value)) {
+            this.solrRequestHandler = value;
+          }
+        } else if (SOLR_QUERY_PARAMS.contains(paramKey)) {
+          queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
+        } else if (paramKey.endsWith(".facet.prefix")
+            && SOLR_FACET_FIELDS.contains(paramKey.split("\\.")[1])) {
+          queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
+        } else {
+          LOG.warn("Unknown parameter: {}", URLEncoder.encode(XssUtils.clean(paramKey), "UTF-8"));
         }
-      } else if (SOLR_QUERY_PARAMS.contains(paramKey)) {
-        queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
-      } else if (paramKey.endsWith(".facet.prefix")
-          && SOLR_FACET_FIELDS.contains(paramKey.split("\\.")[1])) {
-        queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
-      } else {
-        LOG.warning("Unknown parameter: " + URLEncoder.encode(XssUtils.clean(paramKey), "UTF-8"));
       }
+
+      if (queryString.equals("")) {
+        queryString = "q=*:*";
+      }
+
+      LOG.info("Solr query: {}", queryString);
+
+      return queryString;
+    } catch (UnsupportedEncodingException e) {
+      LOG.error("Error encoding query parameters", e);
+      return "q=*:*";
     }
-
-    if (queryString.equals("")) {
-      queryString = "q=*:*";
-    }
-
-    LOG.info("Solr query: " + queryString);
-
-    return queryString;
   }
 
-  private String appendQueryParameters(String key, String[] parameterValues)
-      throws UnsupportedEncodingException {
+  private String appendQueryParameters(String key, String[] parameterValues) {
     String value = "";
     String queryString = "";
-    for (String v : Arrays.asList(parameterValues)) {
-      value = XssUtils.clean(v);
-      queryString +=
-          String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
+    try {
+      for (String v : Arrays.asList(parameterValues)) {
+        LOG.info("{} : {}", key, v);
+        value = XssUtils.clean(v);
+        queryString += String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
+      }
+      return queryString;
+    } catch (UnsupportedEncodingException e) {
+      LOG.error("Error encoding parameter value", e);
+      return "";
     }
-    return queryString;
   }
 
   private void setResponseHeader(String wt, HttpServletResponse response) {
