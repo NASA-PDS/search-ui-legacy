@@ -23,6 +23,13 @@ import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
 import gov.nasa.pds.search.util.XssUtils;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.core5.util.TimeValue;
+import org.apache.hc.core5.util.Timeout;
+import org.apache.hc.client5.http.config.RequestConfig;
+import java.util.concurrent.TimeUnit;
+import java.time.Duration;
+import java.io.PrintWriter;
 
 
 public class RegistryLegacyServlet extends HttpServlet {
@@ -57,6 +64,15 @@ public class RegistryLegacyServlet extends HttpServlet {
   private static String SOLR_COLLECTION = "data";
   private static String DEFAULT_REQUEST_HANDLER = "archive-filter";
 
+  private static final int MAX_TOTAL_CONNECTIONS = 100;
+  private static final int MAX_PER_ROUTE = 20;
+  private static final int VALIDATE_AFTER_INACTIVITY_MS = 2000;
+  private static final int CONNECTION_TIMEOUT_MS = 5000;
+  private static final int SOCKET_TIMEOUT_MS = 10000;
+
+  private PoolingHttpClientConnectionManager connectionManager;
+  private CloseableHttpClient httpClient;
+
   /**
    * Initialize the servlet.
    *
@@ -68,6 +84,22 @@ public class RegistryLegacyServlet extends HttpServlet {
    */
   @Override
   public void init(ServletConfig servletConfig) throws ServletException {
+    super.init(servletConfig);
+
+    // Initialize connection manager with eviction policy
+    connectionManager = new PoolingHttpClientConnectionManager();
+    connectionManager.setMaxTotal(MAX_TOTAL_CONNECTIONS);
+    connectionManager.setDefaultMaxPerRoute(MAX_PER_ROUTE);
+    connectionManager.setValidateAfterInactivity(TimeValue.ofMilliseconds(VALIDATE_AFTER_INACTIVITY_MS));
+
+    // Create HTTP client with connection pool
+    httpClient = HttpClients.custom()
+        .setConnectionManager(connectionManager)
+        .setDefaultRequestConfig(RequestConfig.custom()
+            .setConnectTimeout(Timeout.ofMilliseconds(CONNECTION_TIMEOUT_MS))
+            .setResponseTimeout(Timeout.ofMilliseconds(SOCKET_TIMEOUT_MS))
+            .build())
+        .build();
 
     // Grab the solrServerUrl parameter from the servlet config.
     this.solrServerUrl = servletConfig.getInitParameter("solrServerUrl");
@@ -86,8 +118,21 @@ public class RegistryLegacyServlet extends HttpServlet {
     }
 
     LOG.debug("Solr Server URL: {}", this.solrServerUrl);
+  }
 
-    super.init(servletConfig);
+  @Override
+  public void destroy() {
+    try {
+      if (httpClient != null) {
+        httpClient.close();
+      }
+      if (connectionManager != null) {
+        connectionManager.close();
+      }
+    } catch (IOException e) {
+      LOG.error("Error closing HTTP client resources", e);
+    }
+    super.destroy();
   }
 
   /**
@@ -105,18 +150,24 @@ public class RegistryLegacyServlet extends HttpServlet {
       String url = String.format("%s/%s/%s?%s", this.solrServerUrl, this.solrCollection,
               this.solrRequestHandler, queryString);
 
-      try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-        ClassicHttpRequest httpGet = ClassicRequestBuilder.get(url).build();
-        String resultContent = null;
-        try (CloseableHttpResponse solrResponse = httpClient.execute(httpGet)) {
-          response.setStatus(solrResponse.getCode());
-          setResponseHeader(request.getParameter("wt"), response);
-          HttpEntity entity = solrResponse.getEntity();
-
-          // Get response information
-          resultContent = EntityUtils.toString(entity);
+      ClassicHttpRequest httpGet = ClassicRequestBuilder.get(url).build();
+      String resultContent = null;
+      try (CloseableHttpResponse solrResponse = httpClient.execute(httpGet)) {
+        response.setStatus(solrResponse.getCode());
+        setResponseHeader(request.getParameter("wt"), response);
+        HttpEntity entity = solrResponse.getEntity();
+        if (entity != null) {
+          try {
+            resultContent = EntityUtils.toString(entity);
+          } finally {
+            EntityUtils.consume(entity);
+          }
         }
-        response.getWriter().write(resultContent);
+      }
+      if (resultContent != null) {
+        try (PrintWriter writer = response.getWriter()) {
+          writer.write(resultContent);
+        }
       }
     } catch (Exception e) {
       LOG.error("Error processing request", e);
