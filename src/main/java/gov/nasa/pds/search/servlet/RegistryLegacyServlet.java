@@ -163,15 +163,26 @@ public class RegistryLegacyServlet extends HttpServlet {
         }
       }
       if (resultContent != null) {
-        try (PrintWriter writer = response.getWriter()) {
-          writer.write(resultContent);
-        }
+        writeResponseContent(response, resultContent);
       }
     } catch (IOException e) {
-      LOG.error("Error processing request", e);
-    }
+      LOG.error("IO error while processing request", e);
+      try {
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+            "Internal system failure. Contact pds-operator@jpl.nasa.gov for additional assistance.");
+      } catch (IOException ioe) {
+        LOG.error("Failed to send error response", ioe);
+      }
+    } catch (IllegalArgumentException e) {
+      LOG.error("Invalid argument in request", e);
+      try {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+            "Invalid request parameters. Please check your input.");
+      } catch (IOException ioe) {
+        LOG.error("Failed to send error response", ioe);
+      }
     } catch (Exception e) {
-      LOG.error("Error processing request", e);
+      LOG.error("Unexpected error while processing request", e);
       try {
         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
             "Internal system failure. Contact pds-operator@jpl.nasa.gov for additional assistance.");
@@ -228,7 +239,7 @@ public class RegistryLegacyServlet extends HttpServlet {
           queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
         } else {
           if (LOG.isWarnEnabled()) {
-            LOG.warn("Unknown parameter: {}", URLEncoder.encode(XssUtils.clean(paramKey), "UTF-8"));
+            LOG.warn("Unknown parameter: {}", URLEncoder.encode(XssUtils.sanitize(paramKey), "UTF-8"));
           }
         }
       }
@@ -272,6 +283,14 @@ public class RegistryLegacyServlet extends HttpServlet {
       }
     }
     response.addHeader(HttpHeaders.CONTENT_TYPE, contentType);
+  }
+
+  private void writeResponseContent(HttpServletResponse response, String content) {
+    try (PrintWriter writer = response.getWriter()) {
+      writer.write(content);
+    } catch (IOException e) {
+      LOG.error("Error processing request", e);
+    }
   }
 }
 
