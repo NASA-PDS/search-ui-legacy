@@ -1,5 +1,13 @@
 # Changelog
 
+## [«unknown»](https://github.com/NASA-PDS/search-ui-legacy/tree/«unknown») (2025-05-01)
+
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.3.0...«unknown»)
+
+**Other closed issues:**
+
+- Prevent potential DoS attack by handling exceptions in search-ui-legacy [\#49](https://github.com/NASA-PDS/search-ui-legacy/issues/49)
+
 ## [v2.3.0](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.3.0) (2024-11-25)
 
 [Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.2.1...v2.3.0)
