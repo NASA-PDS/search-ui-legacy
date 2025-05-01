@@ -219,7 +219,7 @@ public class RegistryLegacyServlet extends HttpServlet {
    * @throws UnsupportedEncodingException
    */
   private String getQueryString(HttpServletRequest request) {
-    String queryString = "";
+    StringBuilder queryString = new StringBuilder();
 
     try {
       Enumeration<?> parameterNames = request.getParameterNames();
@@ -233,10 +233,10 @@ public class RegistryLegacyServlet extends HttpServlet {
             this.solrRequestHandler = value;
           }
         } else if (SOLR_QUERY_PARAMS.contains(paramKey)) {
-          queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
+          queryString.append(appendQueryParameters(paramKey, request.getParameterValues(paramKey)));
         } else if (paramKey.endsWith(".facet.prefix")
             && SOLR_FACET_FIELDS.contains(paramKey.split("\\.")[1])) {
-          queryString += appendQueryParameters(paramKey, request.getParameterValues(paramKey));
+          queryString.append(appendQueryParameters(paramKey, request.getParameterValues(paramKey)));
         } else {
           if (LOG.isWarnEnabled()) {
             LOG.warn("Unknown parameter: {}", URLEncoder.encode(XssUtils.sanitize(paramKey), "UTF-8"));
@@ -244,13 +244,13 @@ public class RegistryLegacyServlet extends HttpServlet {
         }
       }
 
-      if (queryString.equals("")) {
-        queryString = "q=*:*";
+      if (queryString.length() == 0) {
+        queryString.append("q=*:*");
       }
 
       LOG.info("Solr query: {}", queryString);
 
-      return queryString;
+      return queryString.toString();
     } catch (UnsupportedEncodingException e) {
       LOG.error("Error encoding query parameters", e);
       return "q=*:*";
@@ -258,14 +258,13 @@ public class RegistryLegacyServlet extends HttpServlet {
   }
 
   private String appendQueryParameters(String key, String[] parameterValues) {
-    String value = "";
-    String queryString = "";
+    StringBuilder queryString = new StringBuilder();
     try {
       for (String v : Arrays.asList(parameterValues)) {
-        value = XssUtils.sanitize(v);
-        queryString += String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8"));
+        String value = XssUtils.sanitize(v);
+        queryString.append(String.format("%s=%s&", key, URLEncoder.encode(value, "UTF-8")));
       }
-      return queryString;
+      return queryString.toString();
     } catch (UnsupportedEncodingException e) {
       LOG.error("Error encoding parameter value", e);
       return "";
