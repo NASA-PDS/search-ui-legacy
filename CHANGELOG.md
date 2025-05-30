@@ -1,5 +1,9 @@
 # Changelog
 
+## [release/2.4.1](https://github.com/NASA-PDS/search-ui-legacy/tree/release/2.4.1) (2025-05-30)
+
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.4.0...release/2.4.1)
+
 ## [v2.4.0](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.4.0) (2025-05-28)
 
 [Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.3.0...v2.4.0)
