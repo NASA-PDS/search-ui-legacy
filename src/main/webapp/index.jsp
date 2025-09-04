@@ -60,6 +60,17 @@ String contextPath = request.getContextPath() + "/";
 
     <p>You may also visit the <a href="/datasearch/data-search">Data Search</a> application if you are looking for search tools or other resources.</p>
 
+    <p>
+      Other PDS-supported search solutions:
+      <ul>
+        <li><a href="https://pds.nasa.gov/datasearch/keyword-search/">Data Set Keyword Search</a> - search for specific collections or data sets</li>
+        <li><a href="https://nasa-pds.github.io/pds-api/">Search API (beta)</a> - programmatic access to search for PDS4 data</li>
+        <li><a href="https://nasa-pds.github.io/peppi/">Peppi Python Library</a> - Python client library providing a simple, pythonic query syntax for exploring PDS4 data in the Search API.</li>
+        <li><a href="https://pds.nasa.gov/tools/doi/#/search">DOI Search</a> - search by Digital Object Identifier (DOI)</li>
+      </ul>
+      <br />
+    </p>
+
     <form action="search.jsp" method="get">
       <input type="text" name="q" size="60" />&nbsp;&nbsp;<input type="submit" value="Search" />
     </form>
