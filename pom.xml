@@ -21,7 +21,7 @@
   <parent>
     <groupId>gov.nasa.pds</groupId>
     <artifactId>parent</artifactId>
-    <version>1.19.0</version>
+    <version>1.20.0</version>
   </parent>
 
   <groupId>gov.nasa.pds.2010.search</groupId>
@@ -43,9 +43,7 @@
   </licenses>
 
   <build>
-    <!-- Disable the unit test.
     <testSourceDirectory>src/test</testSourceDirectory>
-    -->
     <outputDirectory>target/classes</outputDirectory>
     <plugins>
       <plugin>
@@ -144,6 +142,12 @@
         <artifactId>httpclient5</artifactId>
         <version>5.5</version>
         <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
     </dependency>
   </dependencies>
 
