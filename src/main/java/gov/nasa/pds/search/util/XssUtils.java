@@ -23,6 +23,7 @@ public class XssUtils {
 			// javascript: and vbscript:
 			Pattern.compile("javascript:", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("vbscript:", Pattern.CASE_INSENSITIVE),
+<<<<<<< Updated upstream
 			// Event handlers - comprehensive pattern
 			Pattern.compile("on[a-z]+\\s*=\\s*['\"][^'\"]*['\"]", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("on[a-z]+\\s*=\\s*[^\\s>]+", Pattern.CASE_INSENSITIVE),
@@ -34,6 +35,21 @@ public class XssUtils {
 			Pattern.compile("confirm\\s*\\([^)]*\\)", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("prompt\\s*\\([^)]*\\)", Pattern.CASE_INSENSITIVE),
 			// HTML tags - complete tags including closing tags
+=======
+			// Event handlers - comprehensive pattern (fixed ReDoS vulnerability)
+			Pattern.compile("on[a-z]{1,20}\\s*=\\s*['\"][^'\"]{0,1000}['\"]", Pattern.CASE_INSENSITIVE),
+			Pattern.compile("on[a-z]{1,20}\\s*=\\s*[^\\s>]{0,1000}", Pattern.CASE_INSENSITIVE),
+			Pattern.compile("on[a-z]{1,20}\\s*=", Pattern.CASE_INSENSITIVE),
+			// Combined event handlers (like onerroronload) (fixed ReDoS vulnerability)
+			Pattern.compile("on[a-z]{1,20}on[a-z]{1,20}\\s*=\\s*['\"][^'\"]{0,1000}['\"]", Pattern.CASE_INSENSITIVE),
+			Pattern.compile("on[a-z]{1,20}on[a-z]{1,20}\\s*=\\s*[^\\s>]{0,1000}", Pattern.CASE_INSENSITIVE),
+			Pattern.compile("on[a-z]{1,20}on[a-z]{1,20}\\s*=", Pattern.CASE_INSENSITIVE),
+			// JavaScript functions (fixed ReDoS vulnerability)
+			Pattern.compile("alert\\s*\\([^)]{0,1000}\\)", Pattern.CASE_INSENSITIVE),
+			Pattern.compile("confirm\\s*\\([^)]{0,1000}\\)", Pattern.CASE_INSENSITIVE),
+			Pattern.compile("prompt\\s*\\([^)]{0,1000}\\)", Pattern.CASE_INSENSITIVE),
+			// HTML tags - complete tags including closing tags (fixed ReDoS vulnerability)
+>>>>>>> Stashed changes
 			Pattern.compile("<img[^>]*>", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("<iframe[^>]*>.*?</iframe>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL),
 			Pattern.compile("<iframe[^>]*>", Pattern.CASE_INSENSITIVE),
