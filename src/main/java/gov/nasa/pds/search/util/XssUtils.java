@@ -20,8 +20,6 @@ public class XssUtils {
 			// eval(...) and expression(...) - more aggressive patterns
 			Pattern.compile("eval\\s*\\([^)]*\\)", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("expression\\s*\\([^)]*\\)", Pattern.CASE_INSENSITIVE),
-			Pattern.compile("eval\\s*\\(", Pattern.CASE_INSENSITIVE),
-			Pattern.compile("expression\\s*\\(", Pattern.CASE_INSENSITIVE),
 			// javascript: and vbscript:
 			Pattern.compile("javascript:", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("vbscript:", Pattern.CASE_INSENSITIVE),
