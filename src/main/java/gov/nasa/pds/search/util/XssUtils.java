@@ -26,7 +26,6 @@ public class XssUtils {
 			// Event handlers - comprehensive pattern
 			Pattern.compile("on[a-z]+\\s*=\\s*['\"][^'\"]*['\"]", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("on[a-z]+\\s*=\\s*[^\\s>]+", Pattern.CASE_INSENSITIVE),
-			Pattern.compile("on[a-z]+\\s*=", Pattern.CASE_INSENSITIVE),
 			// Combined event handlers (like onerroronload)
 			Pattern.compile("on[a-z]+on[a-z]+\\s*=\\s*['\"][^'\"]*['\"]", Pattern.CASE_INSENSITIVE),
 			Pattern.compile("on[a-z]+on[a-z]+\\s*=\\s*[^\\s>]+", Pattern.CASE_INSENSITIVE),
