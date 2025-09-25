@@ -76,7 +76,8 @@ public class XssUtils {
 			// if any of the offending characters are present that facilitate
 			// Cross-Site Scripting and Blind SQL Injection.
 			// We normally exclude () but they often show up in queries.
-            char[] badChars = {'\0', '|', ';', '$', '@', '\'', '"', '<', '>', '\\', /* CR */ '\r',
+			// We also exclude ':' and '"' as they are legitimate in Solr queries
+            char[] badChars = {'\0', '|', ';', '$', '@', '<', '>', '\\', /* CR */ '\r',
                 /* LF */ '\n',
 					/* Backspace */ '\b' };
 			try {
