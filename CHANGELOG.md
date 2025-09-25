@@ -1,8 +1,16 @@
 # Changelog
 
-## [release/2.4.1](https://github.com/NASA-PDS/search-ui-legacy/tree/release/2.4.1) (2025-05-30)
+## [release/2.4.2](https://github.com/NASA-PDS/search-ui-legacy/tree/release/2.4.2) (2025-09-25)
 
-[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.4.0...release/2.4.1)
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.4.1...release/2.4.2)
+
+**Defects:**
+
+- Bug with XSS vulnerability [\#59](https://github.com/NASA-PDS/search-ui-legacy/issues/59) [[s.high](https://github.com/NASA-PDS/search-ui-legacy/labels/s.high)]
+
+## [v2.4.1](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.4.1) (2025-05-30)
+
+[Full Changelog](https://github.com/NASA-PDS/search-ui-legacy/compare/v2.4.0...v2.4.1)
 
 ## [v2.4.0](https://github.com/NASA-PDS/search-ui-legacy/tree/v2.4.0) (2025-05-28)
 
