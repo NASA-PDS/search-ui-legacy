@@ -50,7 +50,7 @@ jobs:
         steps:
             -
                 name: 💳 Checkout
-                uses: actions/checkout@v5
+                uses: actions/checkout@v4
                 with:
                     lfs: true
                     fetch-depth: 0
@@ -76,8 +76,8 @@ jobs:
                     maven-unstable-artifact-phases: clean,site,deploy,-DskipTests
                     packages: openjdk11-jdk
                 env:
-                    ossrh_username: ${{secrets.OSSRH_USERNAME}}
-                    ossrh_password: ${{secrets.OSSRH_PASSWORD}}
+                    central_portal_username: ${{secrets.CENTRAL_REPOSITORY_USERNAME}}
+                    central_portal_token: ${{secrets.CENTRAL_REPOSITORY_TOKEN}}
                     CODE_SIGNING_KEY: ${{secrets.CODE_SIGNING_KEY}}
                     ADMIN_GITHUB_TOKEN: ${{secrets.ADMIN_GITHUB_TOKEN}}
 
