@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"gov.nasa.pds.search.servlet"},{"l":"gov.nasa.pds.search.util"}]
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"gov.nasa.pds.search.servlet"},{"l":"gov.nasa.pds.search.util"}];updateSearchResults();

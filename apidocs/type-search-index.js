@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"gov.nasa.pds.search.servlet","l":"RegistryLegacyServlet"},{"p":"gov.nasa.pds.search.util","l":"XssUtils"}]
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"gov.nasa.pds.search.servlet","l":"RegistryLegacyServlet"},{"p":"gov.nasa.pds.search.util","l":"XssUtils"}];updateSearchResults();
